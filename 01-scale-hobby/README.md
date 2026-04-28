@@ -1,7 +1,7 @@
 # 01 Scale — Hobby
 
 > [!IMPORTANT]
-> 이 아키텍처는 개인 프로젝트나 소규모 사이드 프로젝트를 위한 단순하고 비용 효율적인 AWS 클라우드 아키텍처입니다.
+> 이 아키텍처는 1인 개발자가 바이브코딩(AI 생성 코드) 기반 서비스를 AWS에 배포할 때 적용할 수 있는 보안 최소 기준을 적용한 아키텍처입니다.
 
 ![Stage](https://img.shields.io/badge/Stage-01%20Hobby-0A7E3B?style=flat-square)
 ![Scope](https://img.shields.io/badge/Scope-Single-1F6FEB?style=flat-square)
