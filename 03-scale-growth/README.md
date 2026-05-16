@@ -133,9 +133,9 @@ AWS Organizations 아래 7개 계정을 3개 OU로 구성합니다.
    - AWS 콘솔 → Route 53 → Hosted zones → Create hosted zone
    - 생성 후 NS 레코드를 도메인 등록 업체에 등록
 
-4. **Log Archive 계정 S3 버킷 수동 생성** (닭-달걸 문제 회피)
+4. **Log Archive 계정 S3 버킷 수동 생성** 
    - CloudTrail이 버킷에 로그를 쓰려면 버킷이 먼저 존재해야 하고
-   - 버킷 정솵에 CloudTrail ARN이 필요하므로 `log-archive-account`를 먼저 apply
+   - 버킷 정책에 CloudTrail ARN이 필요하므로 `log-archive-account`를 먼저 apply
 
 ---
 
