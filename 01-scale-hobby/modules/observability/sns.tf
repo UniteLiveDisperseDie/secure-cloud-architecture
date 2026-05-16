@@ -34,3 +34,41 @@ resource "aws_sns_topic_subscription" "alarm_email" {
   protocol  = "email"
   endpoint  = var.alarm_email
 }
+<<<<<<< HEAD
+=======
+
+# ── us-east-1 (루트 로그인 알람용) ───────────────
+resource "aws_sns_topic" "alarm_global" {
+  provider = aws.us_east_1
+  name     = "${var.project}-${var.environment}-alarm-global"
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project}-${var.environment}-alarm-global"
+  })
+}
+
+resource "aws_sns_topic_policy" "alarm_global" {
+  provider = aws.us_east_1
+  arn      = aws_sns_topic.alarm_global.arn
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid    = "AllowEventBridge"
+      Effect = "Allow"
+      Principal = {
+        Service = "events.amazonaws.com"
+      }
+      Action   = "SNS:Publish"
+      Resource = aws_sns_topic.alarm_global.arn
+    }]
+  })
+}
+
+resource "aws_sns_topic_subscription" "alarm_email_global" {
+  provider  = aws.us_east_1
+  topic_arn = aws_sns_topic.alarm_global.arn
+  protocol  = "email"
+  endpoint  = var.alarm_email
+}
+>>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da

@@ -24,6 +24,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "frontend" {
   bucket = aws_s3_bucket.frontend.id
 
   rule {
+    # AES256은 S3 관리형 키를 사용하는 SSE-S3 암호화다.
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }

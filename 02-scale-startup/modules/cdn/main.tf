@@ -21,9 +21,10 @@ resource "aws_cloudfront_distribution" "main" {
   is_ipv6_enabled     = true
   http_version        = "http2"
   price_class         = var.cloudfront_price_class
-  aliases             = ["${var.subdomain}.${var.domain_name}"]
+  aliases             = [var.domain_name]
   comment             = "${var.project}-${var.environment} distribution"
   default_root_object = "index.html"
+  web_acl_id          = var.web_acl_arn # WAF Web ACL ARN 전달
 
   # Origin 1: S3 (Static Resources)
   origin {
@@ -58,8 +59,8 @@ resource "aws_cloudfront_distribution" "main" {
     path_pattern           = "/static/*"
     target_origin_id       = "S3Origin"
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods         = ["GET", "HEAD"]
-    cached_methods          = ["GET", "HEAD"]
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
     compress               = true
 
     cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
@@ -70,8 +71,8 @@ resource "aws_cloudfront_distribution" "main" {
     path_pattern           = "/api/*"
     target_origin_id       = "ALBOrigin"
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods         = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods          = ["GET", "HEAD"]
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
     compress               = true
 
     # Disable caching for API requests
@@ -83,8 +84,8 @@ resource "aws_cloudfront_distribution" "main" {
   default_cache_behavior {
     target_origin_id       = "ALBOrigin"
     viewer_protocol_policy = "redirect-to-https" # Redirect HTTP to HTTPS
-    allowed_methods         = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods          = ["GET", "HEAD"]
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
     compress               = true
 
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
@@ -102,7 +103,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   # SSL Certificate (ACM in us-east-1)
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.main.certificate_arn
+    acm_certificate_arn      = var.acm_certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021" # Block TLS 1.0/1.1
   }
@@ -112,8 +113,6 @@ resource "aws_cloudfront_distribution" "main" {
   tags = merge(local.common_tags, {
     Name = "${var.project}-${var.environment}-cloudfront"
   })
-
-  depends_on = [aws_acm_certificate_validation.main]
 }
 
 # CloudFront Managed Cache Policies (Data Sources)

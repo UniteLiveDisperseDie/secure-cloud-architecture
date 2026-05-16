@@ -15,6 +15,11 @@ variable "s3_log_bucket_name" {
   type        = string
 }
 
+variable "s3_log_bucket_arn" {
+  description = "S3 bucket ARN for CloudTrail and ALB log storage"
+  type        = string
+}
+
 # CloudWatch
 variable "cloudwatch_log_retention_days" {
   description = "Log retention period in days for CloudWatch"

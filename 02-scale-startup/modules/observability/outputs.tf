@@ -2,12 +2,12 @@
 
 output "s3_log_bucket_id" {
   description = "Name of the S3 bucket for log storage"
-  value       = aws_s3_bucket.logs.id
+  value       = var.s3_log_bucket_name
 }
 
 output "s3_log_bucket_arn" {
   description = "ARN of the S3 bucket for log storage"
-  value       = aws_s3_bucket.logs.arn
+  value       = var.s3_log_bucket_arn
 }
 
 output "cloudtrail_arn" {

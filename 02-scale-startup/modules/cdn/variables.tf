@@ -9,16 +9,9 @@ variable "environment" {
   type        = string
 }
 
-# Domain / ACM
 variable "domain_name" {
   description = "Domain name registered in Route53 (e.g., example.com)"
   type        = string
-}
-
-variable "subdomain" {
-  description = "Subdomain to be associated with CloudFront (e.g., www)"
-  type        = string
-  default     = "www"
 }
 
 # S3
@@ -43,4 +36,14 @@ variable "cloudfront_shared_secret" {
   description = "Shared secret value for CloudFront to ALB custom header (injected from the security module)"
   type        = string
   sensitive   = true
+}
+
+variable "acm_certificate_arn" {
+  description = "ACM certificate ARN for CloudFront (us-east-1, output from the dns module)"
+  type        = string
+}
+
+variable "web_acl_arn" {
+  description = "WAFv2 Web ACL ARN for CloudFront"
+  type        = string
 }

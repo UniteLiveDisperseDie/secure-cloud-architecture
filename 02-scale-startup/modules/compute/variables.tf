@@ -18,11 +18,6 @@ variable "app_security_group_ids" {
   type        = list(string)
 }
 
-variable "db_security_group_ids" {
-  description = "RDS에 적용할 보안 그룹 ID 목록"
-  type        = list(string)
-}
-
 variable "alb_target_group_arn" {
   description = "ASG가 연결될 ALB 타겟 그룹 ARN (networking 모듈 output)"
   type        = string
@@ -33,21 +28,12 @@ variable "iam_instance_profile_name" {
   type        = string
 }
 
-variable "kms_key_id" {
-  description = "RDS 스토리지 암호화에 사용할 KMS 키 ID (security 모듈 output)"
-  type        = string
-}
-
-variable "db_secret_id" {
-  description = "Secrets Manager에 저장된 DB 비밀번호 Secret ID (security 모듈 output)"
-  type        = string
-}
 
 variable "tags" {
   description = "모든 리소스에 공통으로 적용할 태그"
   type        = map(string)
   default = {
-    Project     = "my-project"
-    ManagedBy   = "terraform"
+    Project   = "my-project"
+    ManagedBy = "terraform"
   }
 }

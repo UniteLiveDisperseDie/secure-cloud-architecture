@@ -22,3 +22,8 @@ variable "s3_app_bucket_arn" {
   description = "App 버킷 ARN (EC2 Role 권한 및 버킷 정책에 사용)"
   type        = string
 }
+
+variable "github_repo" {
+  description = "GitHub Actions OIDC 허용할 레포 (예: your-org/your-repo)"
+  type        = string
+}

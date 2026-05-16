@@ -11,6 +11,15 @@ provider "aws" {
   region = var.region
 }
 
+<<<<<<< HEAD
+=======
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+
+>>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
 # ──────────────────────────────────────────
 # S3 App Bucket
 # ──────────────────────────────────────────
@@ -69,6 +78,10 @@ module "security" {
   iam_user_name     = var.iam_user_name
   s3_app_bucket_id  = aws_s3_bucket.app.id
   s3_app_bucket_arn = aws_s3_bucket.app.arn
+<<<<<<< HEAD
+=======
+  github_repo       = var.github_repo
+>>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
 
   depends_on = [aws_s3_bucket_public_access_block.app]
 }
@@ -88,6 +101,14 @@ module "compute" {
 module "observability" {
   source = "./modules/observability"
 
+<<<<<<< HEAD
+=======
+  providers = {
+    aws           = aws
+    aws.us_east_1 = aws.us_east_1
+  }
+
+>>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
   project     = var.project
   environment = var.environment
   alarm_email = var.alarm_email
@@ -125,3 +146,14 @@ resource "aws_route53_record" "alb" {
     evaluate_target_health = true
   }
 }
+<<<<<<< HEAD
+=======
+
+module "waf" {
+  source = "./modules/waf"
+
+  project     = var.project
+  environment = var.environment
+  alb_arn     = module.network.alb_arn
+}
+>>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da

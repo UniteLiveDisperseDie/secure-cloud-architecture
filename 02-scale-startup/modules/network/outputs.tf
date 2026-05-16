@@ -20,7 +20,10 @@ output "alb_subnet_ids" {
 
 output "private_subnet_ids" {
   description = "Private subnet IDs (RDS)"
-  value       = [aws_subnet.private.id]
+  value = [
+    aws_subnet.private.id,
+    aws_subnet.private_b.id,
+  ]
 }
 
 # Security Groups

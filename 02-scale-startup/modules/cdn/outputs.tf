@@ -25,7 +25,8 @@ output "s3_frontend_bucket_arn" {
   value       = aws_s3_bucket.frontend.arn
 }
 
-output "acm_certificate_arn" {
-  description = "ACM certificate ARN (us-east-1)"
-  value       = aws_acm_certificate.main.arn
+output "cloudfront_hosted_zone_id" {
+  description = "CloudFront hosted zone ID (for Route53 alias record in root main.tf)"
+  value       = aws_cloudfront_distribution.main.hosted_zone_id
 }
+

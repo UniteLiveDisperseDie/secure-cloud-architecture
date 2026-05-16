@@ -52,6 +52,19 @@ resource "aws_subnet" "private" {
   })
 }
 
+resource "aws_subnet" "private_b" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_cidr_b
+  availability_zone = var.availability_zone_b
+
+  # Single-AZ RDS가 availability_zone_a에 고정되더라도
+  # DB subnet group의 AZ coverage를 위해 secondary private subnet은 유지한다.
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project}-${var.environment}-private-b"
+  })
+}
+
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
@@ -97,5 +110,10 @@ resource "aws_route_table" "private" {
 
 resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private_b" {
+  subnet_id      = aws_subnet.private_b.id
   route_table_id = aws_route_table.private.id
 }

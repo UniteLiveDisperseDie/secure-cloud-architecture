@@ -9,6 +9,12 @@ resource "aws_launch_template" "app_server" {
     name = var.iam_instance_profile_name
   }
 
+  # EC2 메타데이터는 IMDSv2 토큰이 있을 때만 접근 가능하도록 강제한다.
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   user_data = filebase64("${path.module}/scripts/install_apache.sh")
 
   tags = merge(

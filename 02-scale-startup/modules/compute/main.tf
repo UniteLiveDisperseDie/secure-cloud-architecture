@@ -1,6 +1,5 @@
 locals {
   instance_type           = "t3.small"
-  database_instance_class = "db.t3.small"
 }
 
 data "aws_ami" "amazon_linux" {
@@ -18,7 +17,3 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-# Secrets Manager에서 DB 비밀번호 참조 (security 모듈이 생성한 secret)
-data "aws_secretsmanager_secret_version" "db_password" {
-  secret_id = var.db_secret_id
-}

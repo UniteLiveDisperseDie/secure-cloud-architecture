@@ -10,6 +10,12 @@ resource "aws_lb" "main" {
   ]
   drop_invalid_header_fields = true
 
+  access_logs {
+    bucket  = var.alb_access_logs_bucket_name
+    prefix  = "alb"
+    enabled = true
+  }
+
   tags = merge(local.common_tags, {
     Name = "${var.project}-${var.environment}-alb"
   })
@@ -57,10 +63,6 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-data "aws_secretsmanager_secret_version" "origin_secret" {
-  secret_id = "${var.project}/${var.environment}/origin-secret"
-}
-
 # Listener Rule: forward only if X-Origin-Secret header matches
 resource "aws_lb_listener_rule" "origin_secret" {
   listener_arn = aws_lb_listener.https.arn
@@ -69,10 +71,9 @@ resource "aws_lb_listener_rule" "origin_secret" {
   condition {
     http_header {
       http_header_name = "X-Origin-Secret"
-      # If stored as plain string:
-      values = [data.aws_secretsmanager_secret_version.origin_secret.secret_string]
-      # If stored as JSON (e.g. {"value": "..."}):
-      # values         = [jsondecode(data.aws_secretsmanager_secret_version.origin_secret.secret_string).value]
+      # ALB가 Secrets Manager를 직접 조회하지 않고,
+      # 루트 모듈에서 생성한 동일한 secret 값을 입력으로 받아 검증한다.
+      values = [var.cloudfront_shared_secret]
     }
   }
 
