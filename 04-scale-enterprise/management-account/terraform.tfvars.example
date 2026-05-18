@@ -1,0 +1,30 @@
+region = "ap-northeast-2"
+
+# AWS Organizations Organization ID
+org_id = "o-xxxxxxxxxx"
+
+# 허용 리전 (글로벌 서비스 제외 - iam, cloudfront 등은 리전 무관)
+allowed_regions = ["ap-northeast-2", "us-east-1"]
+
+# ─── Security OU ──────────────────────────────────────────────────────────────
+# Control Tower가 자동 생성하는 계정들
+log_archive_account_id      = "111111111111"
+audit_account_id            = "222222222222"
+security_tooling_account_id = "333333333333"
+
+# ─── Infrastructure OU ────────────────────────────────────────────────────────
+network_account_id         = "444444444444"
+shared_services_account_id = "555555555555"
+backup_account_id          = "666666666666"
+
+# ─── Production OU ────────────────────────────────────────────────────────────
+prod_app_account_id = "777777777777"
+
+# ─── Non-Production OU ────────────────────────────────────────────────────────
+staging_app_account_id  = "888888888881"
+staging_data_account_id = "888888888882"
+dev_team_account_id     = "999999999999"
+
+# ─── Sandbox OU ───────────────────────────────────────────────────────────────
+sandbox_account_id = "000000000000"
+
