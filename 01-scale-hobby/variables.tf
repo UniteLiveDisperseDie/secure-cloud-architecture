@@ -72,11 +72,8 @@ variable "app_port" {
   type        = number
   default     = 8080
 }
-<<<<<<< HEAD
-=======
 
 variable "github_repo" {
   description = "GitHub Actions OIDC 허용할 레포 (예: your-org/your-repo)"
   type        = string
 }
->>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da

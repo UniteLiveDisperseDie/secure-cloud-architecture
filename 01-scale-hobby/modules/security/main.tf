@@ -92,20 +92,12 @@ resource "aws_iam_role_policy_attachment" "ssm" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
 resource "aws_iam_instance_profile" "app" {
   name = "${local.name_prefix}-app-instance-profile"
   role = aws_iam_role.ec2.name
 }
 
 # ──────────────────────────────────────────
-<<<<<<< HEAD
-# S3 App Bucket Policy
-# EC2 Role만 허용 + HTTP 전체 Deny
-=======
 # GitHub Actions OIDC Provider
 # Access Key 없이 OIDC로 AWS 인증
 # ──────────────────────────────────────────
@@ -193,20 +185,15 @@ resource "aws_iam_role_policy" "github_actions" {
 # ──────────────────────────────────────────
 # S3 App Bucket Policy
 # EC2 Role + GitHub Actions Role 허용 + HTTP 전체 Deny
->>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
 # ──────────────────────────────────────────
 
 resource "aws_s3_bucket_policy" "app" {
   bucket = var.s3_app_bucket_id
 
-<<<<<<< HEAD
-  depends_on = [aws_iam_role.ec2]
-=======
   depends_on = [
     aws_iam_role.ec2,
     aws_iam_role.github_actions
   ]
->>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -228,8 +215,6 @@ resource "aws_s3_bucket_policy" "app" {
           "${var.s3_app_bucket_arn}/*"
         ]
       },
-<<<<<<< HEAD
-=======
       # GitHub Actions: builds/ 경로에만 업로드 허용
       {
         Sid    = "AllowGithubActionsRole"
@@ -243,7 +228,6 @@ resource "aws_s3_bucket_policy" "app" {
         ]
         Resource = "${var.s3_app_bucket_arn}/builds/*"
       },
->>>>>>> cf1c8533f1a672c71ccb075097f0773ad5a265da
       {
         Sid       = "DenyNonHttps"
         Effect    = "Deny"
