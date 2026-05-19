@@ -88,7 +88,7 @@ AWS Organizations 아래 7개 계정을 3개 OU로 구성합니다.
 
 | 모듈 | 역할 |
 |------|------|
-| `organizations` | OU·계정 구조, SCP 정솵 생성 및 연결 |
+| `organizations` | OU·계정 구조, SCP 정책 생성 및 연결 |
 | `identity-center` | IAM Identity Center, 5개 Permission Set, 그룹 할당 |
 
 ### `log-archive-account/`
@@ -135,7 +135,7 @@ AWS Organizations 아래 7개 계정을 3개 OU로 구성합니다.
 
 4. **Log Archive 계정 S3 버킷 수동 생성**
    - CloudTrail이 버킷에 로그를 쓰려면 버킷이 먼저 존재해야 하고
-   - 버킷 정솵에 CloudTrail ARN이 필요하므로 `log-archive-account`를 먼저 apply
+   - 버킷 정책에 CloudTrail ARN이 필요하므로 `log-archive-account`를 먼저 apply
 
 ---
 
