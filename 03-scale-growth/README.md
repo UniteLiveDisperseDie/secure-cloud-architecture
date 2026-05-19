@@ -77,7 +77,7 @@ AWS Organizations 아래 7개 계정을 3개 OU로 구성합니다.
 | `security/secrets` | Secrets Manager 시크릿 쉘 생성 (DB 자격증명·API 키) |
 | `security/iam` | ECS Task Role, Instance Profile, Execution Role, GitHub OIDC |
 | `security/waf` | WAFv2 WebACL (CLOUDFRONT 스코프, us-east-1) |
-| `security/config` | AWS Config 레코더·딘리버리·30개 관리형 룰·EventBridge |
+| `security/config` | AWS Config 30개 관리형 룰·EventBridge |
 | `network` | VPC 3계층, NACL, ALB, 8개 VPC Endpoint, 보안그룹, Flow Logs |
 | `compute` | ECS Cluster, EC2 Launch Template (IMDSv2), ASG, ECR, ECS Task/Service |
 | `database` | RDS Multi-AZ MySQL 8.0, ElastiCache Redis (TLS+AUTH), DB 자격증명 주입 |
