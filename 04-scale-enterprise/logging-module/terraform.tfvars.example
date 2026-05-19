@@ -1,0 +1,102 @@
+##############################################################################
+# Logging Platform - 설정 예시
+# 복사 후 terraform.tfvars로 저장하여 사용하세요
+##############################################################################
+
+project     = "mycompany"
+environment = "prod"
+
+tags = {
+  Team        = "platform-security"
+  CostCenter  = "sec-001"
+}
+
+# ── S3 로그 보존 정책 ──────────────────────────────────────────────────────────
+log_retention_days = 90    # 90일 Standard → Intelligent-Tiering
+log_glacier_days   = 365   # 1년 후 Glacier IR
+
+# ── KMS 암호화 (선택) ─────────────────────────────────────────────────────────
+# 입력하면 S3/CloudTrail/GuardDuty S3 export에 KMS 암호화 적용
+# 비워두면 SSE-S3 자동 적용. GuardDuty S3 Publishing은 KMS가 있을 때만 생성됨
+# kms_key_arn = "arn:aws:kms:ap-northeast-2:123456789012:key/your-key-id"
+
+# ── OpenSearch SIEM (VPC/Subnet 필수) ────────────────────────────────────────
+# false로 설정하면 VPC/Subnet 값 없이도 나머지 모듈 배포 가능
+enable_opensearch          = true
+opensearch_vpc_id          = "vpc-0a1b2c3d4e5f67890"
+opensearch_subnet_ids      = ["subnet-0a1b2c3d", "subnet-0b2c3d4e"]
+opensearch_instance_type   = "r6g.large.search"
+opensearch_instance_count  = 2
+opensearch_ebs_volume_size = 200
+
+# ── Security Findings ─────────────────────────────────────────────────────────
+# 이미 활성화된 서비스는 false로 두세요 (충돌 방지)
+enable_guardduty        = true
+enable_inspector        = true
+enable_config           = true
+enable_access_analyzer  = true
+enable_security_hub     = true
+enable_auto_remediation = true
+
+# ── Log Sources ───────────────────────────────────────────────────────────────
+# 기존 리소스 ARN/ID를 입력하면 해당 로그 수집이 활성화됩니다
+# 비워두면 해당 로그 소스는 생성되지 않습니다
+
+waf_acl_arn = "arn:aws:wafv2:ap-northeast-2:123456789012:regional/webacl/prod-waf/xxxxx"
+
+vpc_ids = [
+  "vpc-0a1b2c3d4e5f67890",
+  "vpc-0b2c3d4e5f6789012",
+]
+
+route53_zone_ids = [
+  "Z1234567890ABCDEF",
+]
+
+# alb_arns = ["arn:aws:elasticloadbalancing:ap-northeast-2:123456789012:loadbalancer/app/prod-alb/xxxxx"]
+# 주의: alb_arns 변수는 정의되어 있지만 현재 log_sources 모듈에 구현 리소스가 없습니다.
+#       ALB Access Log 활성화는 ALB 관리 모듈에서 직접 처리하거나 log_sources 모듈 확장이 필요합니다.
+
+# ── SaaS Integration (AppFabric) ─────────────────────────────────────────────
+# 연동할 SaaS 서비스를 아래 목록에 추가하면 자동 생성됩니다
+# 비워두면 AppFabric 리소스를 생성하지 않습니다
+saas_apps = [
+  {
+    name                  = "github"
+    app_type              = "GITHUB"
+    credential_secret_arn = "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:logging/github-oauth-XXXXXX"
+    tenant_id             = ""
+  },
+  {
+    name                  = "confluence"
+    app_type              = "ATLASSIAN"
+    credential_secret_arn = "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:logging/atlassian-oauth-XXXXXX"
+    tenant_id             = "yourcompany.atlassian.net"
+  },
+]
+
+# ── On-Premise Integration (FluentBit) ───────────────────────────────────────
+# 소스마다 별도의 Firehose 스트림 + IAM 자격증명이 생성됩니다
+# 비워두면 온프레미스 리소스를 생성하지 않습니다
+onprem_sources = [
+  {
+    name        = "idc-primary"
+    description = "주 IDC 서버군"
+    log_prefix  = "onprem/idc-primary/"
+  },
+]
+
+# ── Alerting ─────────────────────────────────────────────────────────────────
+# 비워두면 해당 알림 Lambda를 생성하지 않습니다
+slack_webhook_url         = "https://hooks.slack.com/services/T.../B.../xxx"
+slack_channel             = "#security-alerts"
+jira_url                  = "https://yourcompany.atlassian.net"
+jira_api_token_secret_arn = "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:logging/jira-token-XXXXXX"
+jira_project_key          = "SEC"
+jira_issue_type           = "Bug"
+
+# ── Monitoring (AMP/Prometheus) ───────────────────────────────────────────────
+# enable_amp = true 시 AMP Workspace와 Alert Manager 생성
+# grafana_workspace_id 입력 시 Grafana → AMP 조회 Role 추가 생성
+enable_amp           = false
+# grafana_workspace_id = "g-xxxxxxxxxx"

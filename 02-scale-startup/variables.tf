@@ -18,6 +18,15 @@ variable "region" {
 }
 
 # ──────────────────────────────────────────
+# IAM User
+# ──────────────────────────────────────────
+variable "iam_users" {
+  description = "IAM 유저 목록"
+  type        = set(string)
+}
+
+
+# ──────────────────────────────────────────
 # 네트워크 (VPC)
 # ──────────────────────────────────────────
 variable "vpc_cidr" {
@@ -122,6 +131,12 @@ variable "domain_name" {
   type        = string
 }
 
+variable "subdomain" {
+  description = "CloudFront에 연결할 서브도메인"
+  type        = string
+  default     = "www"
+}
+
 variable "cloudfront_price_class" {
   description = "CloudFront 가격 정책"
   type        = string
@@ -143,13 +158,10 @@ variable "s3_log_bucket_name" {
   type        = string
 }
 
-# ──────────────────────────────────────────
-# KMS
-# ──────────────────────────────────────────
-variable "kms_deletion_window" {
-  description = "KMS 키 삭제 대기 기간 (일)"
-  type        = number
-  default     = 7
+variable "cloudfront_origin_secret_name" {
+  description = "CloudFront -> ALB 공유 시크릿 이름. 기존 시크릿이 손상됐으면 새 이름으로 변경 가능"
+  type        = string
+  default     = null
 }
 
 # ──────────────────────────────────────────

@@ -1,0 +1,20 @@
+# Terraform working directory
+**/.terraform/
+**/.terraform.lock.hcl
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Terraform local variable files
+02-scale-startup/terraform.tfvars
+*.auto.tfvars
+
+
+# Terraform plan / override files
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
