@@ -12,8 +12,8 @@
 
 ## 소개
 
-<img src="../doc/images/04-scale-enterprise.png" align="center" alt="중대규모 아키텍처">
-<img src="../doc/images/enterprise_ou_diagram.png" align="center" alt="중대규모 OU_아키텍처">
+<img src="../../doc/images/04-scale-enterprise.png" align="center" alt="중대규모 아키텍처">
+<img src="../../doc/images/enterprise_ou_diagram.png" align="center" alt="중대규모 OU_아키텍처">
 
 <br>
 
