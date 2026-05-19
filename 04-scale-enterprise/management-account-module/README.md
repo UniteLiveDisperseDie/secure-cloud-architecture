@@ -1,21 +1,12 @@
-# 04 Scale — Enterprise
+## 계정 구조
 
-> [!IMPORTANT]
-> 이 아키텍처는 대규모 조직(임직원 300명 이상)이 AWS Organizations 기반 멀티어카운트 환경을 운영하는 시나리오를 기반으로 설계된 엔터프라이즈 클라우드 아키텍처입니다. 
+<img src="../../doc/images/enterprise_account.png" align="center" alt="중대규모 OU_아키텍처">
 
-![Stage](https://img.shields.io/badge/Stage-04%20Enterprise-0A7E3B?style=flat-square)
-![Scope](https://img.shields.io/badge/Scope-Multi%20Account-1F6FEB?style=flat-square)
-![Terraform](https://img.shields.io/badge/Terraform-1.5+-7B42BC?style=flat-square&logo=terraform&logoColor=white)
-[![AWS](https://custom-icon-badges.demolab.com/badge/AWS-FF9900?style=flat-square&logo=aws&logoColor=white)](https://aws.amazon.com)
+| Terraform 루트 | 담당 계정 | 주요 리소스 |
+|---|---|---|
+| `management-account/` | Org Management | Organizations, OU 구조, SCP, IAM Identity Center, Permission Sets, 계정 할당 |
 
----
 
-## 소개
-
-<img src="../../doc/images/04-scale-enterprise.png" align="center" alt="중대규모 아키텍처">
-<img src="../../doc/images/enterprise_ou_diagram.png" align="center" alt="중대규모 OU_아키텍처">
-
-<br>
 
 - AWS Organizations 기반 12개 계정, 4단계 OU 계층으로 폭발 반경(Blast Radius)을 계정 경계로 격리
 - Security OU(Log Archive·Audit·Security Tooling), Infrastructure OU(Network·SharedServices·Backup)를 전담 계정으로 분리
@@ -24,46 +15,6 @@
 - GuardDuty·SecurityHub·Inspector·Config·AccessAnalyzer·FirewallManager 6개 보안 서비스를 Security Tooling 계정으로 위임 관리
 
 설계 의도와 위협 시나리오, 보안 설계 원칙 등 자세한 내용은 저희의 [GitHub Pages 문서](https://unitelivedispersedie.github.io/secure-cloud-architecture-docs/)를 참고해주세요.
-
----
-
-## OU 계층 구조
-
-```text
-Root
-├── Security OU
-│   ├── Log Archive 계정      (CloudTrail·Config 로그 중앙 보관)
-│   ├── Audit 계정            (AWS Audit Manager, 감사 전담)
-│   └── Security Tooling 계정 (GuardDuty·SecurityHub·Inspector 위임 관리자)
-│
-├── Infrastructure OU
-│   ├── Network 계정          (VPC·Transit Gateway·Route 53 전담)
-│   ├── Shared Services 계정  (ECR·AMI·SSM Parameter Store 전담)
-│   └── Backup 계정           (AWS Backup 중앙 관리)
-│
-├── Workloads OU
-│   ├── Production OU
-│   │   └── Prod App 계정
-│   └── Non-Production OU
-│       ├── Development OU
-│       │   └── Dev Team 계정
-│       └── Staging OU
-│           ├── Staging App 계정
-│           └── Staging Data 계정
-│
-└── Sandbox OU
-    └── Sandbox 계정
-```
-
----
-
-## 계정 구조
-
-<img src="../doc/images/enterprise_account.png" align="center" alt="중대규모 OU_아키텍처">
-
-| Terraform 루트 | 담당 계정 | 주요 리소스 |
-|---|---|---|
-| `management-account/` | Org Management | Organizations, OU 구조, SCP, IAM Identity Center, Permission Sets, 계정 할당 |
 
 > [!NOTE]
 > 각 멤버 계정(Security·Infrastructure·Workloads·Sandbox)의 워크로드 Terraform은 이 저장소의 범위에 포함되지 않습니다.  
